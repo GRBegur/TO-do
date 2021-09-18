@@ -1,14 +1,22 @@
 
+let fileName;
+let currentList;
 
 const input = document.getElementById("input");
 const addButton = document.getElementById("input-btn1");
 const list = document.getElementById("list-append-area");
 const deleteButton = document.getElementById("input-btn2");
+const saveButton = document.getElementById("saveButton");
+const folderButton = document.getElementById("folderButton")
+
 
 input.addEventListener("keyup", readInput);
 addButton.addEventListener("click",readInput);
 deleteButton.addEventListener("mouseup",clearSelectedElements);
-
+document.addEventListener("DOMContentLoaded",renderList)
+saveButton.addEventListener("click",saveFile);
+folderButton.addEventListener("click",folderButtonAction);
+window.addEventListener("unload",saveCurrentList);
 
 function clearSelectedElements(){
     const selectedElements = document.querySelectorAll(".strike-through");
@@ -21,17 +29,17 @@ function clearSelectedElements(){
 function readInput(event){
 
     if (event.type=="click" && input.value !== ""){
-        appendElement(input.value);
+        appendElement(event,input.value);
         input.value = "";
     }
     if(event.type=="keyup" && input.value !== "" && event.keyCode===13){
-        appendElement(input.value);
+        appendElement(event,input.value);
         input.value = "";
     }
 }   
 
 
-function appendElement(string){
+function appendElement(event,string){
     const divP = document.createElement("div");
     const div1 = document.createElement("div");
     const div2 = document.createElement("div");
@@ -79,6 +87,10 @@ function appendElement(string){
     buttonT.setAttribute("onClick","strike(this)");
     buttonC.setAttribute("onClick","remove(this.parentElement.parentElement)");
     divP.addEventListener("dragstart",dragFunction);
+
+    if (event!=="render"){
+        currentList.push(string);
+    }
 }
 
 function strike(event){
@@ -92,19 +104,21 @@ function remove(event){
     });
 }
 
-        // <div class="row pt-5 justify-row" draggable="true">
-        //     <div class="col-sm-2 input-button-col">
-        //         <button class="input-btnt"><img src="images/tick.png" class="input-button-img"></button>
-        //     </div>
-        //     <div class="col-sm-8" id="input-col">
-        //         <p class="todo-text">Lorem ipsum dolor sit amet.</p> 
-        //     </div>
-        //     <div class="col-sm-2 input-button-col">
-        //         <button class="input-btnc"><img src="images/close.png" class="input-button-img"></button>
-        //     </div>
-        // </div>
+// ....................................................................................
+    // <div class="row pt-5 justify-row" draggable="true">
+    //     <div class="col-sm-2 input-button-col">
+    //         <button class="input-btnt"><img src="images/tick.png" class="input-button-img"></button>
+    //     </div>
+    //     <div class="col-sm-8" id="input-col">
+    //         <p class="todo-text">Lorem ipsum dolor sit amet.</p> 
+    //     </div>
+    //     <div class="col-sm-2 input-button-col">
+    //         <button class="input-btnc"><img src="images/close.png" class="input-button-img"></button>
+    //     </div>
+    // </div>
+// ...............................................................................................
 
-
+// .............draf functionality...............
 function dragFunction(event){
     
     event.target.classList.add("dragging");
@@ -143,4 +157,59 @@ function getPosition(yOffset){
         }
     }, {offset: Number.NEGATIVE_INFINITY, element: null}).element;
 }
+
+
+// ...............local storage funtionality......................
+
+function checkSessionStorage(){
+    
+    return (sessionStorage.getItem("currentList")==null) ? false : true;
+}
+
+function renderList(){
+    if(checkSessionStorage()){
+        currentList = JSON.parse(sessionStorage.getItem("currentList"));
+        currentList.forEach((element)=>{
+            appendElement("render",element);
+        });
+        fileName = JSON.parse(sessionStorage.getItem("fileName"));
+    }else{
+        currentList = [];
+        sessionStorage.setItem("todoList",JSON.stringify({}));
+        sessionStorage.setItem("fileName",JSON.stringify(""));
+    }
+}
+
+function saveCurrentList(){
+    sessionStorage.setItem("currentList",JSON.stringify(currentList));
+    sessionStorage.setItem("fileName",JSON.stringify(""));
+}
+
+function folderButtonAction(){
+    if (currentList.length>0) fileName ? saveFile("folder") :(confirm("Do you want to save current file")? saveFile("folder") : currentList=[]);
+    location.href = "folders.html";
+}
+
+function saveFile(event){
+    const todoList = JSON.parse(sessionStorage.getItem("todoList"));
+    if (fileName){
+        saveFileHandler(fileName,todoList)
+    }else{
+        fileName = prompt("Enter File name"); 
+        fileName ? saveFileHandler(fileName,todoList) : alert("File not saved") ;
+    }
+    if (event==="folder"){
+        currentList = [];
+        fileName = "";    
+    }
+}
+
+function saveFileHandler(fileName,todoList){
+    todoList[fileName] = currentList;
+    sessionStorage.setItem("todoList",JSON.stringify(todoList));
+    sessionStorage.setItem("fileName",JSON.stringify(fileName));
+}
+
+            // Updating sessionStorage to reflect changes in saved list
+// ....................................................................................
 

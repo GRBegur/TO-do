@@ -4,6 +4,7 @@
     box-sizing: border-box;
 }
 
+
 body{
     background: url(images/background1.jpg) repeat fixed;
     background-position: right;
@@ -106,6 +107,8 @@ h1{
     transition: .3s;
 }
 
+/* background:linear-gradient(to top left, #28b487,#7dd56f) */
+
 #input-btn1:active{
     box-shadow: none;
     transform: scale(.9,.9);
@@ -117,7 +120,7 @@ h1{
 }
 
 #list-append-area{
-    max-width: 68rem;
+    /* max-width: 68rem; */
     max-height: 63vh;
     min-height: 63vh;
     overflow: auto;
@@ -212,4 +215,46 @@ h1{
 
 .dragging{
     opacity: .5;
+}
+
+                    /* for folders page */
+/* ............................................................... */
+
+.no-folders{
+    justify-content: center;
+}
+
+.no-folders p{
+    font-size: 4vw;
+    color: #604e416b
+}
+
+
+.custom-row{
+    margin: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr
+}
+
+.custom-card {
+    background-color: #263743;
+    margin: .1rem;
+    color: #cdd4d9;
+    border-radius: .5rem;
+    min-height: 9rem;
+    min-width: 13rem;
+    justify-self: center;
+    box-shadow: 0 0 5px 0px black;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.custom-card:hover{
+    transform: scale(1,1.01);
+    box-shadow:  0px 20px 60px 0px #2f2e2e;
+}
+
+.custom-card p{
+    margin-top: 1rem;
+    font-size: 1.8vw;
 }
