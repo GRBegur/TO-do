@@ -2,7 +2,8 @@
 > A to-do list web-app
 
 ## Description
-    This project implements a To-do list application, where users can jot down list of actions that they want to prioritize and complete in future. These actions once completed can be marked as done and even deleted from the list. A Drag and drop functionality is introduced where priority of actions can be changed my moving them around. It also provides option to save multiple lists and access them back when needed through folders section.
+
+This project implements a To-do list application, where users can jot down list of actions that they want to prioritize and complete in future. These actions once completed can be marked as done and even deleted from the list. A Drag and drop functionality is introduced where priority of actions can be changed my moving them around. It also provides option to save multiple lists and access them back when needed through folders section.
 
 ## Tech Stack:
 * HTML
