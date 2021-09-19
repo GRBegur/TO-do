@@ -265,20 +265,48 @@ h1{
 .custom-row{
     margin: 2rem;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr
+    grid-template-columns: 1fr;
 }
 
 .custom-card {
     background-color: #263743;
     margin: .1rem;
+    margin-bottom: 1rem;
     color: #cdd4d9;
     border-radius: .5rem;
     min-height: 9rem;
-    min-width: 13rem;
+    min-width: 100%;
     justify-self: center;
     box-shadow: 0 0 5px 0px black;
     cursor: pointer;
     transition: .2s ease;
+}
+
+@media only screen and (min-width:520px) {
+    .custom-row{
+        grid-template-columns: 1fr 1fr;
+    }
+    .custom-card{
+        min-width: 95%;
+    } 
+}
+
+@media only screen and (min-width:980px) {
+    .custom-row{
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    .custom-card{
+        min-width: 95%;
+    } 
+}
+
+@media only screen and (min-width:1190px) {
+    .custom-row{
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+    .custom-card{
+        min-width: 95%;
+    } 
 }
 
 .custom-card:hover{
@@ -288,7 +316,7 @@ h1{
 
 .custom-card p{
     margin-top: 1rem;
-    font-size: 1.8vw;
+    font-size: 1.5rem;
     margin-bottom: 1.5rem;
 }
 
