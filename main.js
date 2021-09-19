@@ -47,9 +47,9 @@ function appendElement(event,string){
 
     divP.setAttribute("class","row pb-3 justify-row");
     divP.setAttribute("draggable","true")
-    div1.setAttribute("class","col-sm-2 input-button-col")
-    div2.setAttribute("class","col-sm-8 input-colP")
-    div3.setAttribute("class","col-sm-2 input-button-col")
+    div1.setAttribute("class","col-2 input-button-col")
+    div2.setAttribute("class","col-8 input-colP")
+    div3.setAttribute("class","col-2 input-button-col")
     
     divP.appendChild(div1)
     divP.appendChild(div2)
@@ -98,6 +98,8 @@ function strike(event){
 }
 
 function remove(event){
+    const val = event.getElementsByClassName("todo-text")[0].innerHTML;
+    currentList.splice(currentList.indexOf(val),1);
     event.classList.add("remove-element-transition");
     event.addEventListener("transitionend",function (eventi){
         eventi.target.classList.add("remove-element");
@@ -106,34 +108,41 @@ function remove(event){
 
 // ....................................................................................
     // <div class="row pt-5 justify-row" draggable="true">
-    //     <div class="col-sm-2 input-button-col">
+    //     <div class="col-2 input-button-col">
     //         <button class="input-btnt"><img src="images/tick.png" class="input-button-img"></button>
     //     </div>
-    //     <div class="col-sm-8" id="input-col">
+    //     <div class="col-8" id="input-col">
     //         <p class="todo-text">Lorem ipsum dolor sit amet.</p> 
     //     </div>
-    //     <div class="col-sm-2 input-button-col">
+    //     <div class="col-2 input-button-col">
     //         <button class="input-btnc"><img src="images/close.png" class="input-button-img"></button>
     //     </div>
     // </div>
 // ...............................................................................................
 
 // .............draf functionality...............
+
+let initial_pos_element;
+let final_pos_element;
+
 function dragFunction(event){
     
     event.target.classList.add("dragging");
 
     event.target.addEventListener("dragend",()=>{
         event.target.classList.remove("dragging");
+        updateCurrentList(initial_pos_element,final_pos_element)
     })
 }
-
 
 list.addEventListener("dragover",(eventi)=>{
     eventi.preventDefault();
     const position = getPosition(eventi.clientY)
     //console.log(position);
     const dragging = document.querySelector(".dragging");
+    initial_pos_element = dragging
+    final_pos_element = position
+    if (position!==null) console.log();
     if(position === null){
         list.insertBefore(dragging,list.firstElementChild);
     }else{
@@ -182,7 +191,7 @@ function renderList(){
 
 function saveCurrentList(){
     sessionStorage.setItem("currentList",JSON.stringify(currentList));
-    sessionStorage.setItem("fileName",JSON.stringify(""));
+    sessionStorage.setItem("fileName",JSON.stringify(fileName));
 }
 
 function folderButtonAction(){
@@ -195,13 +204,20 @@ function saveFile(event){
     if (fileName){
         saveFileHandler(fileName,todoList)
     }else{
-        fileName = prompt("Enter File name"); 
-        fileName ? saveFileHandler(fileName,todoList) : alert("File not saved") ;
+        fileName = prompt("Enter File name");
+        fileName ? (todoList[fileName] ? (confirm("File name already exists, do you want to override") ?  saveFileHandler(fileName,todoList) : overrideRejectHandler(event)): saveFileHandler(fileName,todoList)) : alert("File not saved");
     }
     if (event==="folder"){
         currentList = [];
         fileName = "";    
+    }else{
+        alert("Save Success!!");
     }
+}
+
+function overrideRejectHandler(event){
+    fileName = "";
+    saveFile(event);
 }
 
 function saveFileHandler(fileName,todoList){
@@ -210,6 +226,14 @@ function saveFileHandler(fileName,todoList){
     sessionStorage.setItem("fileName",JSON.stringify(fileName));
 }
 
-            // Updating sessionStorage to reflect changes in saved list
-// ....................................................................................
-
+function updateCurrentList(initial_pos_element,final_pos_element){
+    const initial_pos_value = initial_pos_element.getElementsByTagName("p")[0].innerHTML;
+    const initial_pos_index = currentList.indexOf(initial_pos_value); 
+    if (final_pos_element !== null){
+        currentList.splice(initial_pos_index,1); 
+        currentList.splice(currentList.indexOf(final_pos_element.getElementsByTagName("p")[0].innerHTML)+1,0,initial_pos_value);
+    }else if(initial_pos_index!==0){
+        currentList.splice(initial_pos_index,1); 
+        currentList.splice(0,0,initial_pos_value);
+    }
+}

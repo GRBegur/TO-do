@@ -25,6 +25,20 @@ body{
     margin-left:  0;
 }
 
+@media only screen and (max-width: 560px) {
+    #top-row{
+        display: grid;
+    }
+    h1{
+        font-size: 24vw!important;
+        min-width: 1px!important;
+    }
+    
+    .row{
+        margin-right: 0;
+    }
+}
+
 .col{
     padding: 0;
 }
@@ -32,6 +46,7 @@ body{
 h1{
     color: #ffffff;
     font-size: 8rem;
+    min-width: 51vh;
 }
 
 .navi{
@@ -85,6 +100,24 @@ h1{
     max-width: max-content;
 }
 
+@media only screen and (max-width: 480px) {
+    
+    .container-custom2{
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+    .col-8{
+        max-width: 60%;
+    }
+    
+    .input-button-col{
+        padding-left: .5rem;
+        padding-right: .5rem;
+    }
+    
+}
+
 .input-button-img{
     max-width: 2rem;
 }
@@ -120,7 +153,6 @@ h1{
 }
 
 #list-append-area{
-    /* max-width: 68rem; */
     max-height: 63vh;
     min-height: 63vh;
     overflow: auto;
@@ -257,4 +289,9 @@ h1{
 .custom-card p{
     margin-top: 1rem;
     font-size: 1.8vw;
+    margin-bottom: 1.5rem;
+}
+
+.custom-card #input-btnt{
+    background-color: #308f79;
 }
